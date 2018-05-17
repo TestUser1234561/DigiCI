@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { ProtectedRoute } from "./ProtectedRoute";
 import { Provider } from 'react-redux'
 import { store, actions } from "./reducers/reducers";
 import { rails_data } from "./Utility";
@@ -23,10 +24,14 @@ export default class App extends Component {
     }
 
     render() {
+        let auth = store.getState().user.id || false;
         return(
             <Provider store={store}>
                 <Router>
-                    <Route exact path='/' component={Login} />
+                    <Switch>
+                        <ProtectedRoute exact path='/' auth={auth} redirect='/dash' component={Login} />
+                        <Route path='/dash' />
+                    </Switch>
                 </Router>
             </Provider>
         );
