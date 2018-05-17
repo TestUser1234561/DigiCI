@@ -1,0 +1,11 @@
+
+$font-stack: 1em "Open Sans", Ubuntu, Sans-Serif;
+
+html, body {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  font: $font-stack;
+  background-color: #1E1E28;
+}
