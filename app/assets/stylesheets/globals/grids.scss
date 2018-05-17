@@ -1,0 +1,22 @@
+//Grids
+.grid-center {
+  width: auto;
+  height: auto;
+  display: grid;
+  justify-items: center;
+  align-items: center;
+}
+
+//Grid fills
+.grid-fill {
+  width: 100%;
+  height: 100%;
+}
+
+.grid-fill-x {
+  width: 100%;
+}
+
+.grid-fill-y {
+  height: 100%;
+}

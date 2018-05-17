@@ -1,0 +1,31 @@
+#login-container {
+  align-items: start;
+}
+
+#login-logo {
+  transform: scale(0.75);
+  margin: 60px 45px 45px;
+}
+
+#login-button {
+  font-size: 1.35em;
+  color: white;
+  text-decoration: none;
+  background-color: #1f9cb3;
+  box-shadow: 0 5px #146675;
+  margin-top: 40px;
+  padding: 10px 15px;
+  border-radius: 3px;
+}
+
+#login-button:hover {
+  margin-top: calc(2px + 40px);
+  background-color: #1f9cb3;
+  box-shadow: 0 3px #146675;
+}
+
+#login-button:active {
+  margin-top: calc(5px + 40px);
+  background-color: #146675;
+  box-shadow: none;
+}
