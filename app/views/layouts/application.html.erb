@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>DigiCI</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
+    <head>
+        <title>DigiCI</title>
+        <%= csrf_meta_tags %>
+        <%= csp_meta_tag %>
 
-    <!-- <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>-->
-    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
-      <%= stylesheet_pack_tag 'application' %>
-  </head>
+        <%= favicon_link_tag %>
 
-  <body>
-    <div id="user" data-props="<%= @user %>"></div>
-    <div id="root">
-        <%= yield %>
-    </div>
-    <%= javascript_pack_tag 'application' %>
-  </body>
+        <!-- <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>-->
+        <%= stylesheet_pack_tag 'application' %>
+        <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+        <script defer src="https://pro.fontawesome.com/releases/v5.0.13/js/all.js" integrity="sha384-d84LGg2pm9KhR4mCAs3N29GQ4OYNy+K+FBHX8WhimHpPm86c839++MDABegrZ3gn" crossorigin="anonymous"></script>
+    </head>
+
+    <body>
+        <div id="user" data-props="<%= @user %>"></div>
+        <div id="root">
+            <%= yield %>
+        </div>
+        <%= javascript_pack_tag 'application' %>
+    </body>
 </html>
