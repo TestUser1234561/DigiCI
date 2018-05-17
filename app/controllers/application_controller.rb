@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
     def app
-        @user = current_user.build.target!
+        @user = current_user.build.target! if current_user
         render :index
     end
 
