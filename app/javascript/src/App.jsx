@@ -7,6 +7,7 @@ import { rails_data } from "./Utility";
 
 //Components
 import Login from './components/login/Login';
+import Dashboard from './components/dashboard/Dashboard';
 
 //SCSS Hot reload TODO: remove
 require('../../assets/stylesheets/global.scss');
@@ -30,7 +31,7 @@ export default class App extends Component {
                 <Router>
                     <Switch>
                         <ProtectedRoute exact path='/' auth={auth} redirect='/dash' component={Login} />
-                        <Route path='/dash' />
+                        <Route path='/dash' component={Dashboard} />
                     </Switch>
                 </Router>
             </Provider>

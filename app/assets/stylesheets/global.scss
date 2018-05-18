@@ -5,6 +5,8 @@ $font-stack: 1em "Open Sans", Ubuntu, Sans-Serif;
 
 //React components
 @import 'components/login';
+@import 'components/dashboard';
+@import 'components/nav';
 
 //General
 html, body, #root {

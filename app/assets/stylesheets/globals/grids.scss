@@ -20,3 +20,21 @@
 .grid-fill-y {
   height: 100%;
 }
+
+//Flex box grids
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+//Content justification
+.justify-center {
+  justify-items: center;
+}
+
+.align-center {
+  align-items: center;
+}

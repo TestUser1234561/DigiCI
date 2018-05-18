@@ -1,0 +1,52 @@
+//Main nav bar
+#nav {
+  height: 100%;
+  width: 75px;
+  box-shadow: 0 0 10px #0a0a14;
+  background-color: #4D526B;
+  z-index: 4;
+}
+
+#nav-logo {
+  margin-top: 15px;
+  padding: 5px;
+  cursor: pointer;
+  margin-bottom: 25px;
+}
+
+#nav-logo:hover {
+  border-radius: 4px;
+  background-color: #323646;
+}
+
+.nav-item {
+  margin-bottom: 25px;
+  border-radius: 4px;
+  display: table;
+  text-align: center;
+  width: 25px;
+  height: 25px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.nav-item:hover {
+  background-color: #323646;
+}
+
+//Todo: Fix position in chrome
+.nav-icon {
+  display: table-cell;
+  vertical-align: middle;
+  margin-top: 1px;
+  transform: scale(1.50);
+  color: #edeaea;
+}
+
+//Repos
+#repos {
+  height: 100%;
+  width: 325px;
+  background-color: #4D526B;
+  z-index: 3;
+}
