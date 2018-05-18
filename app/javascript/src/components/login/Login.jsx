@@ -31,7 +31,7 @@ export default ({}) => {
                               transform="translate(-218 -427)"/>
                     </g>
                 </svg>
-                <a id='login-button' href=''><i id='login-button-icon' className="fab fa-github" /> Login with <span style={{fontWeight: '550'}}>GitHub</span></a>
+                <a id='login-button' href='/users/auth/github'><i id='login-button-icon' className="fab fa-github" /> Login with <span style={{fontWeight: '550'}}>GitHub</span></a>
             </div>
         </div>
     )
