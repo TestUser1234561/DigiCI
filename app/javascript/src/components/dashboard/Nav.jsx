@@ -22,6 +22,7 @@ const Item = ({ icon, action = null }) => {
 };
 
 class Nav extends Component {
+
     render() {
         return(
             <div id='nav' className='flex flex-column align-center'>
@@ -33,7 +34,8 @@ class Nav extends Component {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    toggleRepos: () => dispatch(actions.repos.toggle)
+    toggleRepos: () => dispatch(actions.repos.toggle),
+    startFetch: () => dispatch(actions.repos.startFetch)
 });
 
 export default connect(
