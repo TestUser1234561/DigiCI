@@ -4,6 +4,14 @@ Rails.application.routes.draw do
         get 'sign_in', :to => 'devise/sessions#new', :as => :new_user_session
         get 'sign_out', :to => 'devise/sessions#destroy', :as => :destroy_user_session
     end
+
+    #Api routes
+    scope '/api' do
+        get '/repos', to: 'repo#index'
+        post '/repo', to: 'repo#new'
+        delete '/repo', to: 'repo#delete'
+    end
+
     get '/', to: 'application#app', as: :app
     match '*path', to: 'application#app', via: :get
 end
