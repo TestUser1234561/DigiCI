@@ -48,5 +48,64 @@
   height: 100%;
   width: 325px;
   background-color: #4D526B;
+  align-items: center;
   z-index: 3;
+}
+
+#repos-loading-icon {
+  color: #edeaea;
+}
+
+#repos-loading-text {
+  margin-top: 15px;
+  color: #edeaea;
+  font-size: 1.25em;
+}
+
+#repos-search {
+  width: calc(100% - 25px);
+  height: 30px;
+  margin-top: 10px;
+  border-radius: 4px;
+  background-color: #323646;
+  cursor: text;
+}
+
+#repos-search > svg {
+  margin-top: 7px;
+  margin-left: 10px;
+  color: #edeaea;
+}
+
+#repos-search-box {
+  border: none;
+  background-color: #323646;
+  width: calc(100% - 45px);
+  margin-left: 5px;
+  color: white;
+}
+
+.repos-repo {
+  width: calc(100% - 25px);
+  height: 40px;
+  margin-top: 10px;
+  border-radius: 4px;
+  background-color: #5a5f71;
+  line-height: 40px;
+  color: #edeaea;
+  cursor: pointer;
+}
+
+.repos-repo > span {
+  margin-left: 10px;
+}
+
+#repos-add {
+
+}
+
+#repos-add > svg {
+  margin-top: 7px;
+  margin-left: 10px;
+  color: #edeaea;
 }
