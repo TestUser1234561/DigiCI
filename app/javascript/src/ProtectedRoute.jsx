@@ -4,7 +4,7 @@ import {
     Redirect,
 } from 'react-router-dom'
 
-export function ProtectedRoute ({component: Component, auth, redirect, ...rest}) {
+export function ProtectedRoute ({component: Component, auth, redirect = '/', ...rest}) {
     return (
         <Route
             {...rest}

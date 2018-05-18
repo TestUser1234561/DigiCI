@@ -3,6 +3,6 @@ export function rails_data(id) {
     try {
         return JSON.parse(ele.dataset['props']);
     } catch(e) {
-        return {};
+        return false;
     }
 }

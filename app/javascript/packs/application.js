@@ -5,8 +5,11 @@ import { Provider } from 'react-redux';
 
 //import base app
 import App from '../src/App';
+import { store } from "../src/reducers/reducers";
 
 render(
-    <App />,
+    <Provider store={store}>
+        <App />
+    </Provider>,
     document.getElementById('root')
 );
