@@ -10,7 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_16_180530) do
+ActiveRecord::Schema.define(version: 2018_05_18_034151) do
+
+  create_table "repos", force: :cascade do |t|
+    t.integer "user_id"
+    t.string "repo_name"
+    t.string "clone_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
