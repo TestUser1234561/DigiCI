@@ -1,6 +1,6 @@
 class User < ApplicationRecord
-    # Include default devise modules. Others available are:
-    # :confirmable, :lockable, :timeoutable and :omniauthable
+    has_many :repos
+
     devise :omniauthable, omniauth_providers: %i[github]
 
     def build
