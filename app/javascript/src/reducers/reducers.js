@@ -4,18 +4,21 @@ import thunk from 'redux-thunk'
 
 //Import reducers and actions
 import userReducer, { user } from "./users";
-import repoReducer, { repos } from "./repos";
+import reposReducer, { repos } from "./repos";
+import repoReducer, { repo } from "./repo";
 
 //Actions
 export const actions = {
     user: {...user},
-    repos: {...repos}
+    repos: {...repos},
+    repo: {...repo}
 };
 
 //Reducers
 export const reducers = combineReducers({
     user: userReducer,
-    repos: repoReducer
+    repos: reposReducer,
+    repo: repoReducer
 });
 
 //Store
