@@ -35,7 +35,7 @@ const Add = ({ loading, toggle, user, repo, finishFetch, addToRepos, resetSearch
             toggle(true); //Toggle repo select fetch
             fetch(`https://api.github.com/repos/${user.name}/${repo}`).then((response) => response.json()).then((data) => {
                 if(data.message) {
-                    finishFetch({}, data.message) //Github Error
+                    finishFetch({}, data.message); //Github Error
                 } else {
                     fetch('/api/repo', {
                         method: 'post',
@@ -50,7 +50,7 @@ const Add = ({ loading, toggle, user, repo, finishFetch, addToRepos, resetSearch
                         })
                     }).then((response) => response.json()).then((data) => {
                         if(data.error) {
-                            finishFetch({}, data.error) //DigiCI Error
+                            finishFetch({}, data.error); //DigiCI Error
                         } else {
                             //Rest search
                             let search = document.getElementById('repos-search-box');
@@ -236,7 +236,7 @@ const mapDispatchToProps = (dispatch) => ({
     finishReposFetch: (repos) => dispatch(actions.repos.finishReposFetch(repos)),
     toggleRepo: (loading = false, id = false) => dispatch(actions.repo.toggle(loading, id)),
     addToRepos: (repo) => dispatch(actions.repos.add(repo)),
-    setCurrentRepo: (repo = {}) => dispatch(actions.repo.set(repo))
+    setCurrentRepo: (repo = {}, errors = false) => dispatch(actions.repo.set(repo, errors))
 });
 
 export default withRouter(connect(
