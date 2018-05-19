@@ -33,7 +33,9 @@ const Add = ({ loading, toggle, user, repo, finishFetch, addToRepos, resetSearch
         //Check if the button has been pressed
         if(!loading) {
             toggle(true); //Toggle repo select fetch
-            fetch(`https://api.github.com/repos/${user.name}/${repo}`).then((response) => response.json()).then((data) => {
+            fetch(`https://api.github.com/repos/${user.name}/${repo}`, {
+                credentials: 'same-origin'
+            }).then((response) => response.json()).then((data) => {
                 if(data.message) {
                     finishFetch({}, data.message); //Github Error
                 } else {
@@ -91,7 +93,9 @@ const Repo = ({ id, repo_name, toggleRepo, currentRepo, history, url, setCurrent
                 if(id !== currentRepo.id) {
                     //Pull new repo data
                     toggleRepo(true, id);
-                    fetch(`/api/repo/${id}`).then((response) => response.json()).then((data) => {
+                    fetch(`/api/repo/${id}`, {
+                        credentials: 'same-origin'
+                    }).then((response) => response.json()).then((data) => {
                         setCurrentRepo(data);
                     });
                 } else {
@@ -138,10 +142,8 @@ class Repos extends Component {
             .then((response) => response.json())
             .then((data) => {
                 //Parse data correctly based on return
-                if(data.length > 1) {
+                if(data.length > 0) {
                     this.props.finishReposFetch(data.map((r) => r))
-                } else if (data.length = 1) {
-                    this.props.finishReposFetch(data)
                 } else {
                     this.props.finishReposFetch({})
                 }
@@ -188,10 +190,13 @@ class Repos extends Component {
                 setCurrentRepo={this.props.setCurrentRepo}
             />);
         };
-        if(!this.props.filter) {
-            repos = this.props.repos.map(buildRepo);
-        } else {
-            repos = this.props.filter.results.map(buildRepo);
+
+        if(this.props.repos.length > 0) {
+            if(!this.props.filter) {
+                repos = this.props.repos.map(buildRepo);
+            } else {
+                repos = this.props.filter.results.map(buildRepo);
+            }
         }
 
         return(
