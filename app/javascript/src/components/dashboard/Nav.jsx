@@ -22,7 +22,6 @@ const Item = ({ icon, action = null }) => {
 };
 
 class Nav extends Component {
-
     render() {
         return(
             <div id='nav' className='flex flex-column align-center'>

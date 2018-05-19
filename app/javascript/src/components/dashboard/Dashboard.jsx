@@ -1,26 +1,25 @@
 import React, { Component } from 'react';
 import Nav from './Nav';
 import Repos from './Repos';
+import Repo from './Repo'
 import { connect } from "react-redux";
-import { actions } from "../../reducers/reducers";
-import { withRouter } from "react-router-dom";
 
 class Dashboard extends Component {
     render() {
 
-        const reposNav = this.props.reposVisible ? <Repos /> : null;
-
         return(
             <div id='dashboard'>
                 <Nav />
-                { reposNav }
+                { this.props.reposVisible ? <Repos /> : null }
+                { this.props.repoVisible ? <Repo />: null }
             </div>
         );
     }
 }
 
 const mapStateToProps = (state) => ({
-    reposVisible: state.repos.visible
+    reposVisible: state.repos.visible,
+    repoVisible: state.repo.visible
 });
 
 export default connect(
