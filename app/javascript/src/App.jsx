@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Switch } from 'react-router-dom';
 import { ProtectedRoute } from "./ProtectedRoute";
 import { connect } from 'react-redux'
 import { store, actions } from "./reducers/reducers";
@@ -26,6 +26,7 @@ class App extends Component {
                 <Switch>
                     <ProtectedRoute exact path='/' auth={!auth} redirect='/dash' component={Login} />
                     <ProtectedRoute exact path='/dash' auth={auth} component={Dashboard} />
+                    <ProtectedRoute exact path='/dash/:repo' auth={auth} component={Dashboard} />
                 </Switch>
             </Router>
         );
