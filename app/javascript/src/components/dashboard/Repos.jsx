@@ -27,7 +27,7 @@ const Search = ({searchOnKeyUp}) => {
 };
 
 //Add repo button
-const Add = ({ loading, toggle, user, repo, finishFetch, addToRepos, resetSearch }) => {
+const Add = ({ loading, toggle, user, repo, finishFetch, addToRepos, resetSearch, history }) => {
 
     let onAddClick = () => {
         //Check if the button has been pressed
@@ -56,6 +56,7 @@ const Add = ({ loading, toggle, user, repo, finishFetch, addToRepos, resetSearch
                             let search = document.getElementById('repos-search-box');
                             search.value = '';
                             //Add new repo to local dom
+                            history.push(`/dash/${data.repo_name}`);
                             finishFetch(data);
                             addToRepos(data);
                             resetSearch();
@@ -209,9 +210,10 @@ class Repos extends Component {
                          user={this.props.user}
                          loading={this.props.repo.isFetching}
                          toggle={this.props.toggleRepo}
-                         finishFetch={this.props.finishRepoFetch}
+                         finishFetch={this.props.setCurrentRepo}
                          addToRepos={this.props.addToRepos}
                          resetSearch={this.props.onKeyDownFilter}
+                         history={this.props.history}
                     /> : null
                 }
             </div>
@@ -232,7 +234,6 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     onKeyDownFilter: (str = '', result = []) => dispatch(actions.repos.filter(str === '' ? false : {string: str, results: result})),
     finishReposFetch: (repos) => dispatch(actions.repos.finishReposFetch(repos)),
-    finishRepoFetch: (repo = {}, error = false) => dispatch(actions.repo.finishRepoFetch(repo, error)),
     toggleRepo: (loading = false, id = false) => dispatch(actions.repo.toggle(loading, id)),
     addToRepos: (repo) => dispatch(actions.repos.add(repo)),
     setCurrentRepo: (repo = {}) => dispatch(actions.repo.set(repo))

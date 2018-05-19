@@ -8,6 +8,7 @@ $ui-font-color: #edeaea;
 //Main nav bar
 #nav {
   height: 100%;
+  min-width: 75px;
   width: 75px;
   box-shadow: 0 0 10px #0a0a14;
   background-color: $ui-color;
@@ -54,6 +55,8 @@ $ui-font-color: #edeaea;
 #repos {
   height: 100%;
   width: 325px;
+  min-width: 325px;
+  box-shadow: 0 0 10px #0a0a14;
   background-color: $ui-color;
   align-items: center;
   z-index: 3;
