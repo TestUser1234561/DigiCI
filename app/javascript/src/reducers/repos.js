@@ -10,7 +10,7 @@ let defaultState = {
 
 //Actions
 const actions = {
-    finishFetch: 'REPOS_FINISH_FETCH',
+    finishReposFetch: 'REPOS_FINISH_FETCH',
     filter: 'REPOS_FILTER',
     toggle: 'REPOS_TOGGLE',
     add: 'REPOS_ADD',
@@ -18,14 +18,13 @@ const actions = {
 
 //Action builder
 export const repos = {
-    finishFetch: (repos = [], errors = false) => {
-        return { type: actions.finishFetch, repos: repos, errors: errors }
+    finishReposFetch: (repos = [], errors = false) => {
+        return { type: actions.finishReposFetch, repos: repos, errors: errors }
     },
     filter: (arr = false) => {return { type: actions.filter, filter: arr}},
     toggle: { type: actions.toggle },
-    add: (repos) => {
-        console.log(repos);
-        //TODO add repo
+    add: (repo) => {
+        return { type: actions.add, repo: repo }
     }
 };
 
@@ -37,9 +36,9 @@ export default (state = defaultState, action) => {
             return {...state, visible: !state.visible, isFetching: fetch };
 
         case actions.add:
-            return {...state, repos: [...state.repos, ...action.repos]};
+            return {...state, repos: [...state.repos, action.repo]};
 
-        case actions.finishFetch:
+        case actions.finishReposFetch:
             return {...state, fetched: true, isFetching: false, repos: action.repos, errors: action.errors};
 
         case actions.filter:
