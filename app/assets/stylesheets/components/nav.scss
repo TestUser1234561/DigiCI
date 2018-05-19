@@ -131,3 +131,14 @@ $ui-font-color: #edeaea;
   margin-left: 10px;
   color: $ui-font-color;
 }
+
+#nav-user {
+  position: fixed;
+  bottom: 10px;
+  width: 50px;
+}
+
+#nav-user > img {
+  width: 50px;
+  border-radius: 50%;
+}

@@ -21,23 +21,36 @@ const Item = ({ icon, action = null }) => {
     );
 };
 
+const User = ({ img }) => {
+    return(
+        <div id='nav-user'>
+            <img src={img} />
+        </div>
+    ) ;
+};
+
 class Nav extends Component {
     render() {
         return(
             <div id='nav' className='flex flex-column align-center'>
                 <Logo history={this.props.history}/>
                 <Item icon='fal fa-bars' action={this.props.toggleRepos} />
+                <User img={this.props.user.avatar} />
             </div>
         )
     }
 }
 
+const mapStateToProps = (state) => ({
+    user: state.user
+});
+
 const mapDispatchToProps = (dispatch) => ({
     toggleRepos: () => dispatch(actions.repos.toggle),
-    startFetch: () => dispatch(actions.repos.startFetch)
+    startFetch: () => dispatch(actions.repos.startFetch),
 });
 
 export default connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(Nav)
