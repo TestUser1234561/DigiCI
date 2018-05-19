@@ -8,12 +8,12 @@ import { withRouter } from "react-router-dom";
 class Dashboard extends Component {
     render() {
 
-        const repos = this.props.reposVisible ? <Repos /> : null;
+        const reposNav = this.props.reposVisible ? <Repos /> : null;
 
         return(
             <div id='dashboard'>
                 <Nav />
-                { repos }
+                { reposNav }
             </div>
         );
     }
