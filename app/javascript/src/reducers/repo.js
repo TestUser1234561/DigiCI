@@ -29,7 +29,7 @@ export default (state = defaultState, action) => {
             return {...state, visible: visible, isFetching: action.isFetching, id: action.id };
 
         case actions.set:
-            return {...state, isFetching: false, id: action.repo.id, repo: action.repo, errors: action.errors};
+            return {...state, visible: true, isFetching: false, id: action.repo.id, repo: action.repo, errors: action.errors};
 
         default:
             return state;
