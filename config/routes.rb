@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     #Api routes
     scope '/api' do
         get '/repos', to: 'repo#index'
+        get '/repo/:id', to: 'repo#show'
         post '/repo', to: 'repo#new'
         delete '/repo', to: 'repo#delete'
     end

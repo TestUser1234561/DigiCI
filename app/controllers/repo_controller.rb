@@ -17,6 +17,17 @@ class RepoController < ApplicationController
         render json: @repo.build
     end
 
+    def show
+        @user = current_user
+        @repo = Repo.find(params[:id])
+
+        if @repo.user_id == @user.id
+            render json: @repo
+        else
+            render json: { errors: 'Repo not found' }
+        end
+    end
+
     def delete
         @repos = current_user.repos
         @repos = @repos.map do |r|
