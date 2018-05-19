@@ -76,7 +76,7 @@ const Add = ({ loading, toggle, user, name, finishFetch, addToRepos, resetSearch
 //Repo button
 const Repo = ({ id, repo_name, history }) => {
     return(
-        <div className='repos-repo' onClick={() => { history.push(`/dash/${repo_name}; `) }}>
+        <div className='repos-repo' onClick={() => { history.push(`/dash/${repo_name}`) }}>
             <span>{repo_name}</span>
         </div>
     )
