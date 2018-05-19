@@ -1,5 +1,64 @@
+$button-color: #5a5f71;
+$button-hover: #323646;
+
+$ui-color: #4D526B;
+$ui-font-color-alt: #fffcfc;
+
+$margins: 50px;
+
+.button {
+
+}
+
 #repo-view {
   width: 100%;
   height: 100%;
   background-color: #4D526B;
+}
+
+#repo-dash {
+  display: grid;
+  width: calc(100% - #{$margins * 2});
+  margin: $margins;
+}
+
+#repo-header {
+  width: 100%;
+  border-bottom: 1px white solid;
+  padding-bottom: 10px;
+}
+
+#repo-header > a {
+  font-size: 2em;
+  color: $ui-font-color-alt;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#repo-header > a:hover {
+  color: #c3c1c1;
+}
+
+#repo-header > .button {
+  padding: 10px 10px;
+  color: $ui-font-color-alt;
+  background-color: #3b993d;
+  cursor: pointer;
+  float: right;
+}
+
+#repo-runs-table {
+  width: 100%;
+  text-align: left;
+  margin-top: 5px;
+  color: $ui-font-color-alt;
+  font-size: 1em;
+}
+
+#repo-runs-table > thead > tr > th:not(:first-child) {
+  width: 15%;
+}
+
+#repo-runs-table > thead > tr > th:last-child {
+  width: 20%;
 }
