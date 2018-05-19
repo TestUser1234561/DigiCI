@@ -27,56 +27,77 @@ const Search = ({searchOnKeyUp}) => {
 };
 
 //Add repo button
-const Add = ({ loading, toggle, user, name, finishFetch, addToRepos, resetSearch }) => {
+const Add = ({ loading, toggle, user, repo, finishFetch, addToRepos, resetSearch }) => {
+
+    let onAddClick = () => {
+        //Check if the button has been pressed
+        if(!loading) {
+            toggle(true); //Toggle repo select fetch
+            fetch(`https://api.github.com/repos/${user.name}/${repo}`).then((response) => response.json()).then((data) => {
+                if(data.message) {
+                    finishFetch({}, data.message) //Github Error
+                } else {
+                    fetch('/api/repo', {
+                        method: 'post',
+                        credentials: 'same-origin',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            clone_url: data.clone_url,
+                            repo_name: data.name
+                        })
+                    }).then((response) => response.json()).then((data) => {
+                        if(data.error) {
+                            finishFetch({}, data.error) //DigiCI Error
+                        } else {
+                            //Rest search
+                            let search = document.getElementById('repos-search-box');
+                            search.value = '';
+                            //Add new repo to local dom
+                            finishFetch(data);
+                            addToRepos(data);
+                            resetSearch();
+                        }
+                    });
+                }
+            });
+        }
+    };
 
     return(
-        <div id='repos-add' className='repos-repo' onClick={() => {
-            //Attempt to fetch repo from github if the repo is not already loadingRepos
-            if(!loading) {
-                toggle(true);
-                fetch(`https://api.github.com/repos/${user.name}/${name}`)
-                .then((response) => response.json())
-                .then((data) => {
-                    if(data.message) {
-                        finishFetch({}, data.message) //Github Error
-                    } else {
-                        fetch('/api/repo', {
-                            method: 'post',
-                            credentials: 'same-origin',
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                clone_url: data.clone_url,
-                                repo_name: data.name
-                            })
-                        })
-                        .then((response) => response.json())
-                        .then((data) => {
-                            if(data.error) {
-                                finishFetch({}, data.error) //DigiCI Error
-                            } else {
-                                //Rest search
-                                let search = document.getElementById('repos-search-box');
-                                search.value = '';
-                                //Add new repo to local dom
-                                finishFetch(data);
-                                addToRepos(data);
-                                resetSearch();
-                            }
-                        });
-                    }
-                });
-            }
-        }}><i id='repos-add-icon' className='fal fa-plus-circle' /><span>{name}</span></div>
+        <div id='repos-add' className='repos-repo' onClick={onAddClick}>
+            <i id='repos-add-icon' className='fal fa-plus-circle' />
+            <span>{repo}</span>
+        </div>
     );
 };
 
 //Repo button
-const Repo = ({ id, repo_name, history }) => {
+const Repo = ({ id, repo_name, toggleRepo, currentRepo, history, url, setCurrentRepo }) => {
     return(
-        <div className='repos-repo' onClick={() => { history.push(`/dash/${repo_name}`) }}>
+        <div className='repos-repo' onClick={() => {
+            if(!currentRepo.isFetching) {
+                //Update url
+                if(url === repo_name) {
+                    history.push(`/dash`);
+                } else {
+                    history.push(`/dash/${repo_name}`);
+                }
+
+                //Fetch repo or show current copy
+                if(id !== currentRepo.id) {
+                    //Pull new repo data
+                    toggleRepo(true, id);
+                    fetch(`/api/repo/${id}`).then((response) => response.json()).then((data) => {
+                        setCurrentRepo(data);
+                    });
+                } else {
+                    toggleRepo(false, id);
+                }
+            }
+        }}>
             <span>{repo_name}</span>
         </div>
     )
@@ -131,12 +152,12 @@ class Repos extends Component {
         //Font Awesome icon switch fix
         let icon = document.getElementById('repos-add-icon');
         if(icon) {
-            if(props.loadingRepo) {
+            if(props.repo.isFetching && props.repo.id === false) {
                 icon.setAttribute('data-icon', 'circle-notch');
                 icon.setAttribute('data-prefix', 'fas');
                 icon.classList.add('fa-spin')
             } else if(icon.classList.contains('fa-spin')) {
-                if(props.repoError) {
+                if(props.repo.errors) {
                     icon.setAttribute('data-icon', 'exclamation-circle');
                     icon.setAttribute('data-prefix', 'fal');
                 } else {
@@ -154,18 +175,22 @@ class Repos extends Component {
 
         //Generate list of repos for filters or repos themselves
         let repos;
+        let buildRepo = (r) => {
+            return(<Repo
+                key={r.id}
+                id={r.id}
+                repo_name={r.repo_name}
+                history={this.props.history}
+                toggleRepo={this.props.toggleRepo}
+                url={this.props.match.params.repo}
+                currentRepo={this.props.repo}
+                setCurrentRepo={this.props.setCurrentRepo}
+            />);
+        };
         if(!this.props.filter) {
-            repos = this.props.repos.map((r) => { return <Repo
-                key={r.id}
-                id={r.id}
-                repo_name={r.repo_name}
-                history={this.props.history} /> });
+            repos = this.props.repos.map(buildRepo);
         } else {
-            repos = this.props.filter.results.map((r) => { return <Repo
-                key={r.id}
-                id={r.id}
-                repo_name={r.repo_name}
-                history={this.props.history} /> });
+            repos = this.props.filter.results.map(buildRepo);
         }
 
         return(
@@ -180,9 +205,9 @@ class Repos extends Component {
 
                 {   /* Add repo button if its not found in database */
                     this.props.filter && this.props.filter.results.filter((r) => r.repo_name === this.props.filter.string).length === 0 ?
-                    <Add name={this.props.filter.string}
+                    <Add repo={this.props.filter.string}
                          user={this.props.user}
-                         loading={this.props.loadingRepo}
+                         loading={this.props.repo.isFetching}
                          toggle={this.props.toggleRepo}
                          finishFetch={this.props.finishRepoFetch}
                          addToRepos={this.props.addToRepos}
@@ -200,8 +225,7 @@ const mapStateToProps = (state) => ({
     errors: state.repos.errors,
     repos: state.repos.repos,
     filter: state.repos.filter,
-    repoError: state.repo.errors,
-    loadingRepo: state.repo.isFetching,
+    repo: state.repo,
     user: state.user
 });
 
@@ -209,8 +233,9 @@ const mapDispatchToProps = (dispatch) => ({
     onKeyDownFilter: (str = '', result = []) => dispatch(actions.repos.filter(str === '' ? false : {string: str, results: result})),
     finishReposFetch: (repos) => dispatch(actions.repos.finishReposFetch(repos)),
     finishRepoFetch: (repo = {}, error = false) => dispatch(actions.repo.finishRepoFetch(repo, error)),
-    toggleRepo: (loading) => dispatch(actions.repo.toggle(loading)),
-    addToRepos: (repo) => dispatch(actions.repos.add(repo))
+    toggleRepo: (loading = false, id = false) => dispatch(actions.repo.toggle(loading, id)),
+    addToRepos: (repo) => dispatch(actions.repos.add(repo)),
+    setCurrentRepo: (repo = {}) => dispatch(actions.repo.set(repo))
 });
 
 export default withRouter(connect(
