@@ -22,7 +22,7 @@ class RepoController < ApplicationController
         @repo = Repo.find(params[:id])
 
         if @repo.user_id == @user.id
-            render json: @repo
+            render json: @repo.build
         else
             render json: { errors: 'Repo not found' }
         end
