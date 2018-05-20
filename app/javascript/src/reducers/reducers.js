@@ -6,13 +6,16 @@ import thunk from 'redux-thunk'
 import userReducer, { user } from "./users";
 import reposReducer, { repos } from "./repos";
 import repoReducer, { repo } from "./repo";
+import streamReducer, { stream } from './stream';
+import userSettingsReducer, { userSettings } from "./user_settings";
 
 //Actions
 export const actions = {
     user: {...user},
     userSettings: {...userSettings},
     repos: {...repos},
-    repo: {...repo}
+    repo: {...repo},
+    stream: {...stream}
 };
 
 //Reducers
@@ -20,7 +23,8 @@ export const reducers = combineReducers({
     user: userReducer,
     userSettings: userSettingsReducer,
     repos: reposReducer,
-    repo: repoReducer
+    repo: repoReducer,
+    stream: streamReducer
 });
 
 //Store
