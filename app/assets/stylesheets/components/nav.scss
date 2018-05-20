@@ -2,7 +2,7 @@
 $button-color: #5a5f71;
 $button-hover: #323646;
 
-$ui-color: #4D526B;
+$ui-color: #494e67;
 $ui-font-color: #edeaea;
 
 //Main nav bar
@@ -144,4 +144,81 @@ $ui-font-color: #edeaea;
 #nav-user > img {
   width: 50px;
   border-radius: 50%;
+}
+
+//User settings
+#user-settings {
+  position: fixed;
+  width: 305px;
+  left: 85px;
+  bottom: 15px;
+  border-radius: 3px;
+  background-color: #202231;
+  box-shadow: 0 0 10px black;
+  z-index: 100;
+}
+
+#user-settings > span {
+  color: $ui-font-color;
+  margin: 10px 0;
+  font-size: 1.25em;
+  font-weight: 500;
+  width: calc(100% - 20px);
+  padding-bottom: 5px;
+  text-align: center;
+}
+
+#user-settings > span {
+  border-bottom: 1px solid $ui-font-color;
+}
+
+#user-api-key {
+  width: 100%;
+  height: 30px;
+  border-radius: 3px;
+  background-color: #202231;
+  cursor: text;
+  margin-bottom: 5px;
+  padding: 5px 0;
+}
+
+#user-api-key:hover,
+#user-api-key:hover *,
+#user-api-key:focus-within,
+#user-api-key *:hover,
+#user-api-key *:focus {
+  background-color: #13151f;
+}
+
+#user-api-key > svg {
+  margin-top: 7px;
+  margin-left: 10px;
+  color: $ui-font-color;
+}
+
+#user-api-key-box {
+  border: none;
+  background-color: #202231;
+  width: calc(100% - 45px);
+  margin-left: 5px;
+  color: white;
+}
+
+#user-api-key-box:focus {
+  outline: none;
+}
+
+#user-settings-logout {
+  width: 100%;
+  color: $ui-font-color;
+  text-align: center;
+  text-decoration: none;
+  padding: 10px 0;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  cursor: pointer;
+}
+
+#user-settings-logout:hover {
+  background-color: #13151f;
 }
