@@ -7,10 +7,18 @@ Rails.application.routes.draw do
 
     #Api routes
     scope '/api' do
+        #User API
+        patch '/user', to: 'user#update'
+
+        #Repos API
         get '/repos', to: 'repo#index'
         get '/repo/:id', to: 'repo#show'
         post '/repo', to: 'repo#new'
         delete '/repo', to: 'repo#delete'
+
+        #Stream API
+        get '/repo/:id/stream/:uuid', to: 'stream#show'
+        post '/repo/:id/stream', to: 'stream#new'
     end
 
     get '/', to: 'application#app', as: :app
