@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
     skip_before_action :verify_authenticity_token
 
     def app
-        @user = current_user.build.target! if current_user
+        @user = current_user.build.to_json if current_user
         render :index
     end
 

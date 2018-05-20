@@ -4,9 +4,12 @@ class User < ApplicationRecord
     devise :omniauthable, omniauth_providers: %i[github]
 
     def build
-        Jbuilder.new do |user|
-            user.(self, :id, :name, :avatar)
-        end
+        {
+            id: self.id,
+            name: self.name,
+            avatar: self.avatar,
+            token_do: token_do ? true : false
+        }
     end
 
     def self.from_omniauth(auth)
