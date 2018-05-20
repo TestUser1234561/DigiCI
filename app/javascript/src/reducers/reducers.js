@@ -10,6 +10,7 @@ import repoReducer, { repo } from "./repo";
 //Actions
 export const actions = {
     user: {...user},
+    userSettings: {...userSettings},
     repos: {...repos},
     repo: {...repo}
 };
@@ -17,6 +18,7 @@ export const actions = {
 //Reducers
 export const reducers = combineReducers({
     user: userReducer,
+    userSettings: userSettingsReducer,
     repos: reposReducer,
     repo: repoReducer
 });
