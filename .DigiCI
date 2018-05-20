@@ -1,0 +1,6 @@
+{
+  "do": [
+    "echo This is only a test",
+    "npm -v"
+  ]
+}
