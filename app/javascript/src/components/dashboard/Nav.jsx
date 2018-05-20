@@ -21,9 +21,9 @@ const Item = ({ icon, action = null }) => {
     );
 };
 
-const User = ({ img }) => {
+const User = ({ img, toggleUserSettings }) => {
     return(
-        <div id='nav-user'>
+        <div onClick={toggleUserSettings} id='nav-user'>
             <img src={img} />
         </div>
     ) ;
@@ -35,7 +35,7 @@ class Nav extends Component {
             <div id='nav' className='flex flex-column align-center'>
                 <Logo history={this.props.history}/>
                 <Item icon='fal fa-bars' action={this.props.toggleRepos} />
-                <User img={this.props.user.avatar} />
+                <User img={this.props.user.avatar} toggleUserSettings={this.props.toggleUserSettings} />
             </div>
         )
     }
@@ -48,6 +48,7 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
     toggleRepos: () => dispatch(actions.repos.toggle),
     startFetch: () => dispatch(actions.repos.startFetch),
+    toggleUserSettings: () => dispatch(actions.userSettings.toggle)
 });
 
 export default connect(
