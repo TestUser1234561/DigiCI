@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { connect } from "react-redux";
-import { actions } from "../../reducers/reducers";
+import { connect } from 'react-redux';
+import { actions } from '../../reducers/reducers';
+import StreamClient from '../../StreamClient';
 
 //Repo loading frame
 const Info = ({ error }) => {
@@ -70,12 +71,12 @@ let Run = ({ run }) => {
     );
 };
 
-let Table = ({ repo }) => {
+let Table = ({ repo, onRunLatest }) => {
     return(
         <div id='repo-dash'>
         <div id='repo-header'>
             <a href={repo.clone_url}>{repo.repo_name}</a>
-            <span className='button'><i className='fal fa-paper-plane' />&nbsp;&nbsp;Run Latest</span>
+            <span className='button' onClick={onRunLatest}><i className='fal fa-paper-plane' />&nbsp;&nbsp;Run Latest</span>
         </div>
         <div id='repo-runs'>
             <table id='repo-runs-table'>
@@ -96,6 +97,16 @@ let Table = ({ repo }) => {
 };
 
 class Repo extends Component {
+    constructor(props) {
+        super(props);
+
+        this.onRunLatest = this.onRunLatest.bind(this);
+    }
+
+    componentDidMount() {
+        let connection = new StreamClient;
+    }
+
     componentWillReceiveProps(props) {
         //Font Awesome icon switch fix
         let icon = document.getElementById('repos-loading-icon');
@@ -143,12 +154,26 @@ class Repo extends Component {
         }
     }
 
+    onRunLatest() {
+        fetch(`/api/repo/${this.props.repo.id}/stream`, {
+            method: 'post',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }).then((content) => content.json()).then((data) => {
+            console.log(data);
+        })
+    }
+
     render() {
         let repo = this.props.repo;
         return (
             <div id='repo-view'>
                 {   /* Render fetch animation / loading */
-                    repo.isFetching || repo.errors ? <Info error={repo.errors} /> : <Table repo={repo.repo}/>
+                    repo.isFetching || repo.errors ? <Info error={repo.errors} /> :
+                        <Table repo={repo.repo} onRunLatest={this.onRunLatest.bind(this)}/>
                 }
             </div>
         );
