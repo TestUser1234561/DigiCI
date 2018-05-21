@@ -26,7 +26,7 @@ const mapStateToProps = (state) => ({
     reposVisible: state.repos.visible,
     repoVisible: state.repo.visible,
     userSettingsVisible: state.userSettings.visible,
-    streamVisible: false
+    streamVisible: state.stream.visible
 });
 
 export default connect(
