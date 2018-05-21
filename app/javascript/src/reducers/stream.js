@@ -2,24 +2,22 @@
 let defaultState = {
     isFetching: false,
     visible: false,
-    uuid: false,
-    status: false,
-    stream: []
+    id: false,
+    stream: {}
 };
 
 //Actions
 const actions = {
     toggle: 'STREAM_TOGGLE',
-    setStatus: 'STREAM_STATUS',
     set: 'STREAM_SET'
 };
 
 //Action builder
 export const stream = {
-    toggle: (fetch = false, id = false) => {return { type: actions.toggle, isFetching: fetch, uuid: id } },
+    toggle: { type: actions.toggle },
     setStatus: (status = false) => { return { type: actions.setStatus, status: status} },
-    set: (stream = [], uuid) => {
-        return { type: actions.set, stream: stream, uuid: uuid }
+    set: (stream = {}, id) => {
+        return { type: actions.set, stream: stream, id: id }
     }
 };
 
@@ -27,14 +25,10 @@ export const stream = {
 export default (state = defaultState, action) => {
     switch(action.type) {
         case actions.toggle:
-            let visible = action.uuid !== state.uuid ? true : !state.visible;
-            return {...state, visible: visible, isFetching: action.isFetching, uuid: action.uuid };
+            return {...state, visible: !state.visible};
 
         case actions.set:
-            return {...state, visible: true, isFetching: false, id: action.uuid, stream: action.stream };
-
-        case actions.setStatus:
-            return {...state, status: action.status};
+            return {...state, visible: true, isFetching: false, id: action.id, stream: action.stream };
 
         default:
             return state;
