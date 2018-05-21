@@ -36,16 +36,16 @@ class Run < ApplicationRecord
         run = Run.create!(uuid: uuid, status: 0, repo_id: repo.id)
 
         #Generate droplet metadata
-        #@clone_url = repo.clone_url
-        #@repo_id = repo.id
-        #@run_id = run.id
-        #@run_uuid = uuid
-        #@host = url
-        #@api_key = user.token_do
-        #template = ERB.new(File.read('./app/scripts/user_data.sh.erb'))
-        ##Create droplet
-        #droplet = DropletKit::Droplet.new(name: "DigiCI-instance-#{uuid}", region: 'nyc3', image: 'ubuntu-16-04-x64', size: 's-1vcpu-1gb', user_data: template.result(binding))
-        #created = client.droplets.create(droplet)
+        @clone_url = repo.clone_url
+        @repo_id = repo.id
+        @run_id = run.id
+        @run_uuid = uuid
+        @host = url
+        @api_key = user.token_do
+        template = ERB.new(File.read('./app/scripts/user_data.sh.erb'))
+        #Create droplet
+        droplet = DropletKit::Droplet.new(name: "DigiCI-instance-#{uuid}", region: 'nyc3', image: 'ubuntu-16-04-x64', size: 's-1vcpu-1gb', user_data: template.result(binding))
+        created = client.droplets.create(droplet)
 
         run
     end
