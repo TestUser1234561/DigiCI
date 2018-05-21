@@ -9,6 +9,17 @@ class StreamController < ApplicationController
         render json: @stream
     end
 
+    def history
+        @user = current_user
+        @repo = Repo.find(params[:id])
+        @stream = Run.find(params[:stream_id])
+        if @stream.repo_id === @repo.id && @repo.user_id === @user.id
+            render json: @stream.build_history
+        else
+            render json: []
+        end
+    end
+
     def update
         @repo = Repo.find(params[:id])
         @stream = Run.find(params[:stream_id])
