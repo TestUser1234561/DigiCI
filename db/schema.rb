@@ -23,6 +23,8 @@ ActiveRecord::Schema.define(version: 2018_05_19_081448) do
   create_table "runs", force: :cascade do |t|
     t.integer "repo_id"
     t.integer "status"
+    t.string "uuid"
+    t.string "branch"
     t.string "commit"
     t.string "history"
     t.datetime "created_at", null: false
