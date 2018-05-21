@@ -1,5 +1,39 @@
+$ui-font-color: #edeaea;
+
 #stream-view {
   width: 100%;
   height: 100%;
   background-color: #0e0e1c;
+  overflow-y: auto;
+}
+
+#stream-connection {
+  position: fixed;
+  color: #1196d6;
+  top: 10px;
+  margin-left: 10px;
+}
+
+#stream-container {
+  width: calc(100% - 70px);
+  word-wrap: break-spaces;
+  margin: 0 35px;
+  text-align: left;
+  overflow-x: hidden;
+}
+
+#stream-container p {
+  margin: 10px 0;
+}
+
+#stream-container p span {
+  word-wrap: break-spaces;
+}
+
+.stream-message {
+  color: $ui-font-color
+}
+
+.stream-message-error {
+  color: #ab1d1e;
 }
