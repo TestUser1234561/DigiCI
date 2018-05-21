@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { actions } from '../../reducers/reducers';
-import StreamClient from '../../StreamClient';
 
 //Repo loading frame
 const Info = ({ error }) => {
@@ -47,16 +46,16 @@ const Status = ({ code }) => {
     );
 };
 
-let Run = ({ run }) => {
+let Run = ({ run, onRunStreamClick }) => {
     return(
         <tr className='repo-run'>
             <td>
                 <div className='repo-run-commit'>
                     <div className='repo-run-datastream'><i className='far fa-stream' />
-                        <span className='repo-run-datastream-button'>uuid198dfj12</span>
+                        <span className={run.status ? 'repo-run-datastream-button' : null} onClick={onRunStreamClick(run)}>{run.uuid.slice(0, 8)}</span>
                     </div>
-                    <div><i className='fal fa-code-commit' data-fa-transform='rotate-90' />{run.commit}</div>
-                    <div><i className='fal fa-code-branch' />Master</div>
+                    {run.commit ? <div><i className='fal fa-code-commit' data-fa-transform='rotate-90' />{run.commit}</div> : null}
+                    <div><i className='far fa-code-branch' />Master</div>
                 </div>
             </td>
             <td>
@@ -71,7 +70,7 @@ let Run = ({ run }) => {
     );
 };
 
-let Table = ({ repo, onRunLatest }) => {
+let Table = ({ repo, onRunLatest, onRunStreamClick }) => {
     return(
         <div id='repo-dash'>
         <div id='repo-header'>
@@ -88,7 +87,7 @@ let Table = ({ repo, onRunLatest }) => {
                 </tr>
                 </thead>
                 <tbody>
-                    { repo.runs.map((r) => {return <Run key={r.id} run={r} />}) }
+                    { repo.runs.map((r) => {return <Run key={r.id} run={r} onRunStreamClick={onRunStreamClick} />}) }
                 </tbody>
             </table>
         </div>
@@ -101,10 +100,36 @@ class Repo extends Component {
         super(props);
 
         this.onRunLatest = this.onRunLatest.bind(this);
+        this.updateRun = this.updateRun.bind(this);
+        this.onRunStreamClick = this.onRunStreamClick.bind(this)
     }
 
-    componentDidMount() {
-        let connection = new StreamClient;
+    componentWillMount() {
+        //Subscribe to repo update channel if no subscriptions active
+        if(App.cable.subscriptions['subscriptions'].length === 0) {
+            App.cable.subscriptions.create({ channel: 'RepoChannel', repo: this.props.repo.id }, {
+                received: (data) => {
+                    this.updateRun(data)
+                }
+            });
+        }
+    }
+
+    componentWillUpdate(props) {
+        //Unsubscribe to olf channel and sub to new if the repo being viewed is different
+        if(props.repo.id !== this.props.repo.id) {
+            //Remove old subscription
+            if (App.cable.subscriptions['subscriptions'].length > 0) {
+                App.cable.subscriptions.remove(App.cable.subscriptions['subscriptions'][0])
+            }
+
+            //Subscribe to updated channel
+            App.cable.subscriptions.create({ channel: 'RepoChannel', repo: props.repo.id }, {
+                received: (data) => {
+                    this.updateRun(data)
+                }
+            });
+        }
     }
 
     componentWillReceiveProps(props) {
@@ -123,15 +148,16 @@ class Repo extends Component {
                 icon.classList.remove('fa-spin')
             }
         }
-
-        //this.updateStatusIcons();
     }
 
     componentDidUpdate() {
-        //Wait for Font Awesome js to update icons to SVG
-        ///setTimeout(() => {
-        ///    this.updateStatusIcons();
-        ///}, 50);
+        this.updateStatusIcons();
+    }
+
+    updateRun(data) {
+        let id = data.stream;
+        delete data.stream;
+        this.props.updateRun(data, id)
     }
 
     //Font Awesome status icon switch fix
@@ -144,9 +170,16 @@ class Repo extends Component {
 
                 switch(parseInt(code)) {
                     case 0:
-                        console.log(code, icon);///
-                        icon.setAttribute('data-icon', 'sync');
-                        icon.setAttribute('data-prefix', 'fal');
+                    case 1:
+                        icon.setAttribute('data-icon', 'spinner-third');
+                        icon.classList.add('fa-spin');
+                        break;
+                    case 2:
+                        icon.setAttribute('data-icon', 'check');
+                        icon.classList.remove('fa-spin');
+                        break;
+                    case 3:
+                        icon.setAttribute('data-icon', 'exclamation');
                         icon.classList.remove('fa-spin');
                         break;
                 }
@@ -163,8 +196,15 @@ class Repo extends Component {
                 'Content-Type': 'application/json'
             }
         }).then((content) => content.json()).then((data) => {
-            console.log(data);
+            this.props.addRun(data);
         })
+    }
+
+    onRunStreamClick(run) {
+        //Return on status 0, data is not streaming.
+        if(run.status === 0) { return; }
+
+
     }
 
     render() {
@@ -173,7 +213,7 @@ class Repo extends Component {
             <div id='repo-view'>
                 {   /* Render fetch animation / loading */
                     repo.isFetching || repo.errors ? <Info error={repo.errors} /> :
-                        <Table repo={repo.repo} onRunLatest={this.onRunLatest.bind(this)}/>
+                        <Table repo={repo.repo} onRunLatest={this.onRunLatest} onRunStreamClick={this.onRunStreamClick}/>
                 }
             </div>
         );
@@ -186,6 +226,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
+    addRun: (run) => dispatch(actions.repo.addRun(run)),
+    updateRun: (run, id) => dispatch(actions.repo.updateRun(run, id))
 });
 
 export default connect(
