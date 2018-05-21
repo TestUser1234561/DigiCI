@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { actions } from '../../reducers/reducers';
-import {withRouter} from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 //Repo loading frame
 const Info = ({ error }) => {
