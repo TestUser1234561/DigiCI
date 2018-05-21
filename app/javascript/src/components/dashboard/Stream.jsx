@@ -75,7 +75,7 @@ class Stream extends Component {
         }
         return (
             <div id='stream-view'>
-                <i id='stream-connection' className='fas fa-spinner-third fa-spin'/>
+                { this.props.stream.stream.status < 2 ? <i id='stream-connection' className='fas fa-spinner-third fa-spin'/> : null}
                 <div id='stream-container'>
                     {this.props.stream.stream.history ? history.map((chunk, i) => <Chunk key={i} chunk={chunk} />) : null}
                 </div>
