@@ -9,7 +9,10 @@ git clone <%= @clone_url %> /home/build
 cd /home/DigiStream
 git checkout master
 npm install
-node bin/run.js <%= @repo_id %> <%= @run_id %> <%= @run_uuid %> -e <%= @host %>
+
+IP=$(curl -w "\n" http://169.254.169.254/metadata/v1/interfaces/public/0/ipv4/address)
+
+node bin/run.js <%= @repo_id %> <%= @run_id %> <%= @run_uuid %> "${IP}" -e <%= @host %>
 
 API_KEY=<%= @api_key %>
 ID=$(curl -s http://169.254.169.254/metadata/v1/id)
