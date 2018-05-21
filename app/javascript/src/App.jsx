@@ -27,6 +27,7 @@ class App extends Component {
                     <ProtectedRoute exact path='/' auth={!auth} redirect='/dash' component={Login} />
                     <ProtectedRoute exact path='/dash' auth={auth} component={Dashboard} />
                     <ProtectedRoute exact path='/dash/:repo' auth={auth} component={Dashboard} />
+                    <ProtectedRoute exact path='/dash/:repo/:stream' auth={auth} component={Dashboard} />
                 </Switch>
             </Router>
         );
