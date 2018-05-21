@@ -1,6 +1,5 @@
 //Default state
 let defaultState = {
-    isFetching: false,
     visible: false,
     id: false,
     stream: {}

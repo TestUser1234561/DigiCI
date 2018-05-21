@@ -71,8 +71,6 @@ const Add = ({ loading, toggle, user, search, repo, finishFetch, addToRepos, res
 
     let icon;
 
-    console.log(repo.isFetching)
-
     if(repo.isFetching) {
         icon = <i id='repos-add-icon' className='fas fa-circle-notch fa-spin' />
     } else {
