@@ -63,4 +63,6 @@ Rails.application.configure do
 
     # Devise configuration
     config.action_mailer.default_url_options = {host: 'localhost', port: 3000}
+
+    config.action_cable.allowed_request_origins = [/.*/]
 end
