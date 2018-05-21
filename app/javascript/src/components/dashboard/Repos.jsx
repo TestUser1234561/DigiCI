@@ -27,13 +27,13 @@ const Search = ({searchOnKeyUp}) => {
 };
 
 //Add repo button
-const Add = ({ loading, toggle, user, repo, finishFetch, addToRepos, resetSearch, history }) => {
+const Add = ({ loading, toggle, user, search, repo, finishFetch, addToRepos, resetSearch, history }) => {
 
     let onAddClick = () => {
         //Check if the button has been pressed
         if(!loading) {
             toggle(true); //Toggle repo select fetch
-            fetch(`https://api.github.com/repos/${user.name}/${repo}`, {
+            fetch(`https://api.github.com/repos/${user.name}/${search}`, {
                 credentials: 'same-origin'
             }).then((response) => response.json()).then((data) => {
                 if(data.message) {
@@ -69,10 +69,24 @@ const Add = ({ loading, toggle, user, repo, finishFetch, addToRepos, resetSearch
         }
     };
 
+    let icon;
+
+    console.log(repo.isFetching)
+
+    if(repo.isFetching) {
+        icon = <i id='repos-add-icon' className='fas fa-circle-notch fa-spin' />
+    } else {
+        if(repo.errors) {
+            icon = <i id='repos-add-icon' className='fal fa-exclamation-circle' />
+        } else {
+            icon = <i id='repos-add-icon' className='fal fa-plus-circle' />
+        }
+    }
+
     return(
         <div id='repos-add' className='repos-repo' onClick={onAddClick}>
-            <i id='repos-add-icon' className='fal fa-plus-circle' />
-            <span>{repo}</span>
+            {icon}
+            <span>{search}</span>
         </div>
     );
 };
@@ -151,27 +165,6 @@ class Repos extends Component {
         }
     }
 
-    componentWillReceiveProps(props) {
-        //Font Awesome icon switch fix
-        let icon = document.getElementById('repos-add-icon');
-        if(icon) {
-            if(props.repo.isFetching && props.repo.id === false) {
-                icon.setAttribute('data-icon', 'circle-notch');
-                icon.setAttribute('data-prefix', 'fas');
-                icon.classList.add('fa-spin')
-            } else if(icon.classList.contains('fa-spin')) {
-                if(props.repo.errors) {
-                    icon.setAttribute('data-icon', 'exclamation-circle');
-                    icon.setAttribute('data-prefix', 'fal');
-                } else {
-                    icon.setAttribute('data-icon', 'plus-circle');
-                    icon.setAttribute('data-prefix', 'fal');
-                }
-                icon.classList.remove('fa-spin')
-            }
-        }
-    }
-
     render() {
         //Add loading styles
         let center = this.props.loadingRepos ? 'flex-center' : '';
@@ -211,7 +204,8 @@ class Repos extends Component {
 
                 {   /* Add repo button if its not found in database */
                     this.props.filter && this.props.filter.results.filter((r) => r.repo_name === this.props.filter.string).length === 0 ?
-                    <Add repo={this.props.filter.string}
+                    <Add search={this.props.filter.string}
+                         repo={this.props.repo}
                          user={this.props.user}
                          loading={this.props.repo.isFetching}
                          toggle={this.props.toggleRepo}

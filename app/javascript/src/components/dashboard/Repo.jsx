@@ -5,11 +5,13 @@ import { withRouter } from "react-router-dom";
 
 //Repo loading frame
 const Info = ({ error }) => {
+    let icon =  error ?  <i id='repos-loading-icon' style={{color: '#d30a0a'}} className='fal fa-exclamation-circle fa-3x'/>
+        : <i id='repos-loading-icon' className='fal fa-sync fa-spin fa-3x'/>;
     let text = error ?  error : 'Fetching Repo';
 
     return (
         <div className='flex flex-column flex-center grid-fill'>
-            <i id='repos-loading-icon' className='fal fa-sync fa-spin fa-3x'/>
+            {icon}
             <span id='repos-loading-text'>{text}</span>
         </div>
     );
@@ -133,59 +135,10 @@ class Repo extends Component {
         }
     }
 
-    componentWillReceiveProps(props) {
-        //Font Awesome icon switch fix
-        let icon = document.getElementById('repos-loading-icon');
-        if(icon) {
-            if(props.repo.isFetching) {
-                icon.setAttribute('data-icon', 'sync');
-                icon.setAttribute('data-prefix', 'fal');
-                icon.style.color = '#edeaea';
-                icon.classList.add('fa-spin')
-            } else {
-                icon.setAttribute('data-icon', 'exclamation-circle');
-                icon.setAttribute('data-prefix', 'fal');
-                icon.style.color = '#C43023';
-                icon.classList.remove('fa-spin')
-            }
-        }
-    }
-
-    componentDidUpdate() {
-        this.updateStatusIcons();
-    }
-
     updateRun(data) {
         let id = data.stream;
         delete data.stream;
         this.props.updateRun(data, id)
-    }
-
-    //Font Awesome status icon switch fix
-    updateStatusIcons() {
-        let status = document.getElementsByClassName('repo-run-status');
-        if(status.length > 0) {
-            Array.prototype.forEach.call(status, (el) => {
-                let code = el.dataset['code'];
-                let icon = el.childNodes[0];
-
-                switch(parseInt(code)) {
-                    case 0:
-                    case 1:
-                        icon.setAttribute('data-icon', 'spinner-third');
-                        icon.classList.add('fa-spin');
-                        break;
-                    case 2:
-                        icon.setAttribute('data-icon', 'check');
-                        icon.classList.remove('fa-spin');
-                        break;
-                    case 3:
-                        icon.setAttribute('data-icon', 'exclamation');
-                        icon.classList.remove('fa-spin');
-                        break;
-                }
-            });
-        }
     }
 
     onRunLatest() {
