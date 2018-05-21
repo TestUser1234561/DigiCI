@@ -182,7 +182,7 @@ class Repos extends Component {
             return(<Repo
                 key={r.id}
                 id={r.id}
-                repo_name={r.repo_name}
+                repo_name={r.name}
                 history={this.props.history}
                 toggleRepo={this.props.toggleRepo}
                 url={this.props.match.params.repo}

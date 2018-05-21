@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { actions } from '../../reducers/reducers';
+import {withRouter} from "react-router-dom";
 
 //Repo loading frame
 const Info = ({ error }) => {
@@ -52,7 +53,7 @@ let Run = ({ run, onRunStreamClick }) => {
             <td>
                 <div className='repo-run-commit'>
                     <div className='repo-run-datastream'><i className='far fa-stream' />
-                        <span className={run.status ? 'repo-run-datastream-button' : null} onClick={onRunStreamClick(run)}>{run.uuid.slice(0, 8)}</span>
+                        <span className={run.status ? 'repo-run-datastream-button' : null} onClick={() => {onRunStreamClick(run)}}>{run.uuid.slice(0, 8)}</span>
                     </div>
                     {run.commit ? <div><i className='fal fa-code-commit' data-fa-transform='rotate-90' />{run.commit}</div> : null}
                     <div><i className='far fa-code-branch' />Master</div>
@@ -74,7 +75,7 @@ let Table = ({ repo, onRunLatest, onRunStreamClick }) => {
     return(
         <div id='repo-dash'>
         <div id='repo-header'>
-            <a href={repo.clone_url}>{repo.repo_name}</a>
+            <a href={repo.clone_url}>{repo.name}</a>
             <span className='button' onClick={onRunLatest}><i className='fal fa-paper-plane' />&nbsp;&nbsp;Run Latest</span>
         </div>
         <div id='repo-runs'>
@@ -204,7 +205,19 @@ class Repo extends Component {
         //Return on status 0, data is not streaming.
         if(run.status === 0) { return; }
 
+        let stream = this.props.stream;
 
+        if(stream.id === run.id) {
+            if(this.props.match.params.stream === `${run.id}${run.uuid.slice(0, 8)}`) {
+                this.props.history.push(`/dash/${this.props.repo.repo.name}`)
+            } else {
+                this.props.history.push(`/dash/${this.props.repo.repo.name}/${run.id}${run.uuid.slice(0, 8)}`)
+            }
+            this.props.toggleStream();
+        } else {
+            this.props.history.push(`/dash/${this.props.repo.repo.name}/${run.id}${run.uuid.slice(0, 8)}`);
+            this.props.setStream(run, run.id)
+        }
     }
 
     render() {
@@ -222,15 +235,18 @@ class Repo extends Component {
 
 const mapStateToProps = (state) => ({
     repo: state.repo,
-    user: state.user
+    user: state.user,
+    stream: state.stream
 });
 
 const mapDispatchToProps = (dispatch) => ({
     addRun: (run) => dispatch(actions.repo.addRun(run)),
-    updateRun: (run, id) => dispatch(actions.repo.updateRun(run, id))
+    updateRun: (run, id) => dispatch(actions.repo.updateRun(run, id)),
+    toggleStream: () => dispatch(actions.stream.toggle),
+    setStream: (stream, id) => dispatch(actions.stream.set(stream, id))
 });
 
-export default connect(
+export default withRouter(connect(
     mapStateToProps,
     mapDispatchToProps
-)(Repo)
+)(Repo))

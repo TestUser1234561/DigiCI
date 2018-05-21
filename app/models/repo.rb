@@ -5,7 +5,7 @@ class Repo < ApplicationRecord
     def build
         {
             id: self.id,
-            repo_name: self.repo_name,
+            name: self.repo_name,
             clone_url: self.clone_url,
             runs: self.runs.order('created_at DESC').map { |r| r.build }
         }
