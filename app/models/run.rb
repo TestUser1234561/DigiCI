@@ -8,7 +8,12 @@ class Run < ApplicationRecord
             branch: 'Master',
             status: self.status,
             commit: self.commit,
-            created_at: self.created_at,
+            created_at: self.created_at
+        }
+    end
+
+    def build_history
+        {
             history: self.history
         }
     end
@@ -43,6 +48,7 @@ class Run < ApplicationRecord
         @host = url
         @api_key = user.token_do
         template = ERB.new(File.read('./app/scripts/user_data.sh.erb'))
+
         #Create droplet
         droplet = DropletKit::Droplet.new(name: "DigiCI-instance-#{uuid}", region: 'nyc3', image: 'ubuntu-16-04-x64', size: 's-1vcpu-1gb', user_data: template.result(binding))
         created = client.droplets.create(droplet)
