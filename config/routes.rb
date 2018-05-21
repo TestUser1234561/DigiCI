@@ -12,15 +12,14 @@ Rails.application.routes.draw do
 
         #Repos API
         get '/repos', to: 'repo#index'
-        post '/repo/:id/stream', to: 'stream#new'
-        patch '/repo/:id/stream', to: 'stream#update'
         get '/repo/:id', to: 'repo#show'
         post '/repo', to: 'repo#new'
         delete '/repo', to: 'repo#delete'
 
         #Stream API
-        get '/repo/:id/stream/:uuid', to: 'stream#show'
+        get '/repo/:id/stream/:stream_id/history', to: 'stream#history'
         post '/repo/:id/stream', to: 'stream#new'
+        patch '/repo/:id/stream', to: 'stream#update'
     end
 
     get '/', to: 'application#app', as: :app
