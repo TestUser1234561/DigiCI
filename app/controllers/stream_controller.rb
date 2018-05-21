@@ -6,6 +6,7 @@ class StreamController < ApplicationController
         @repo = Repo.find(params[:id])
         #TODO: change url location to request.host_with_port
         @stream = Run.create_stream(@user, @repo, '142.162.58.209:3000') if @repo.user_id == @user.id
+        render json: @stream
     end
 
     def update
