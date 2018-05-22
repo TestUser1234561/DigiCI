@@ -10,6 +10,7 @@ let defaultState = {
 //Actions
 const actions = {
     toggle: 'REPO_TOGGLE',
+    setVisibility: 'REPO_SET_VISIBILITY',
     set: 'REPO_SET',
     addRun: 'REPO_ADD_RUN',
     updateRun: 'REPO_UPDATE_RUN'
@@ -18,6 +19,7 @@ const actions = {
 //Action builder
 export const repo = {
     toggle: (fetch = false, id = false) => {return { type: actions.toggle, isFetching: fetch, id: id }},
+    setVisibility: (visibility = false) => { return { type: actions.setVisibility, visibility: visibility } },
     set: (repo = {}, errors = false) => {
         return { type: actions.set, repo: repo, errors: errors }
     },
@@ -40,6 +42,9 @@ export default (state = defaultState, action) => {
                 isFetching: action.isFetching,
                 id: action.id
             };
+
+        case actions.setVisibility:
+            return {...state, visible: action.visibility}
 
         case actions.set:
             return {
